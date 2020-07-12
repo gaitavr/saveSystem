@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class JsonSaveSystem : ISaveSystem
 { 
-    private string _filePath;
+    private readonly string _filePath;
 
     public JsonSaveSystem()
     {

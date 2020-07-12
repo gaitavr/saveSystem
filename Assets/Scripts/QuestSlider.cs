@@ -29,4 +29,9 @@ public class QuestSlider : Slider
     {
         OnQuestUpdated?.Invoke(Id, val);
     }
+
+    public void UpdateValue(float val)
+    {
+        value = val;
+    }
 }

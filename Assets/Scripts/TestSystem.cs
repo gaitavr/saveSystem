@@ -22,7 +22,7 @@ public class TestSystem : MonoBehaviour
     private Button _increaseLevelBtn;
 
     [SerializeField]
-    private Toggle _subscribeToggle;
+    private Toggle _tutorialToggle;
 
     [SerializeField]
     private GameObject _questContainer;
@@ -30,12 +30,15 @@ public class TestSystem : MonoBehaviour
     [SerializeField]
     private QuestSlider _questPrefab;
 
+    private List<QuestSlider> _sliders = new List<QuestSlider>();
+
     private void CreateQuests()
     {
         foreach (var q in _myData.Quests)
         {
             var quest = Instantiate(_questPrefab,
                 _questContainer.transform);
+            _sliders.Add(quest);
             quest.Init(q);
             quest.OnQuestUpdated.AddListener((id, val) =>
             {
@@ -70,7 +73,7 @@ public class TestSystem : MonoBehaviour
             _myData.Level++;
             Display(_myData);
         });
-        _subscribeToggle.onValueChanged.AddListener(flag =>
+        _tutorialToggle.onValueChanged.AddListener(flag =>
         {
             _myData.IsTutorialCompleted = flag;
             Display(_myData);
@@ -92,6 +95,7 @@ public class TestSystem : MonoBehaviour
         builder.Append("\n");
         builder.Append(data.IsTutorialCompleted ? 
             "Tutorial is completed" : "You have to complete tutorial");
+
         foreach (var quest in data.Quests)
         {
             builder.Append("\n");
@@ -106,8 +110,18 @@ public class TestSystem : MonoBehaviour
 
     private void CorrectUi(SaveData data)
     {
-        _subscribeToggle.isOn = data.IsTutorialCompleted;
+        _tutorialToggle.isOn = data.IsTutorialCompleted;
         _nameField.text = string.Empty;
+        foreach (var slr in _sliders)
+        {
+            foreach (var quest in data.Quests)
+            {
+                if (slr.Id == quest.Id)
+                {
+                    slr.UpdateValue(quest.Progress);
+                }
+            }
+        }
     }
 
     #endregion
@@ -123,7 +137,7 @@ public class TestSystem : MonoBehaviour
 
     private void Start()
     {
-        _saveSystem = new PlayerPrefsSystem();
+        _saveSystem = new BinarySaveSystem();
         CreateStartData();
         Subscribe();
         Display(_myData);

@@ -183,7 +183,7 @@ MonoBehaviour:
   _nameField: {fileID: 2120149441}
   _decreaseLevelBtn: {fileID: 2095544801}
   _increaseLevelBtn: {fileID: 1022395849}
-  _subscribeToggle: {fileID: 1042305354}
+  _tutorialToggle: {fileID: 1042305354}
   _questContainer: {fileID: 291010178}
   _questPrefab: {fileID: 130952664447837325, guid: e5649424fd57ba24883090040592d66d,
     type: 3}
